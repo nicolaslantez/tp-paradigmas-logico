@@ -61,6 +61,10 @@ hayMateriaNecesariaPara(Materia,MateriaNecesaria) :-
 hayMateriaNecesariaPara(Materia,MateriaNecesaria) :- esCorrelativaDe(MateriaNecesaria,Materia).
 
 %Punto2C
+hayMateriaQueHabilitaA(Materia,MateriaQueHabilita) :- 
+    esCorrelativaDe(Materia,OtraMateria),
+    hayMateriaQueHabilitaA(OtraMateria,MateriaQueHabilita).
+
 hayMateriaQueHabilitaA(Materia,MateriaQueHabilita) :- esCorrelativaDe(Materia,MateriaQueHabilita).
 
 /* Punto 3-A */
@@ -105,6 +109,7 @@ perdioPromocion(Alumno, Materia) :-
 
 /* Punto 4-D */
 estaAlDia(Alumno) :-
+    cursada(Alumno,_,_),
     forall(materiasCursadas(Alumno, Materia), not(debeFinal(Alumno, Materia))).
 
 
@@ -191,8 +196,9 @@ test(materias_necesarias_para_algoritmosI, set(MateriasNecesarias == [laboratori
 test(no_hay_materias_necesarias_para_electricidadYMagnetismo,fail) :-
 	hayMateriaNecesariaPara(electricidadYMagnetismo,_).
 
-test(materias_que_habilita_algortimosII, set(MateriasQueHabilita == [algoritmosIII,basesDeDatos,seminarioDeProgramacion])) :-
-	hayMateriaQueHabilitaA(algoritmosII,MateriasQueHabilita).
+test(materias_que_habilita_algortimosI, set(MateriasQueHabilita == [algoritmosIII,algoritmosII,paradigmasDeProgramacion,proyectoDeSoftware,programacionHerramientasModernas,
+                                                                    metodosNumericos,basesDeDatos,seminarioDeProgramacion])) :-
+	hayMateriaQueHabilitaA(algoritmosI,MateriasQueHabilita).
 
 /* Tests punto 8 */
 test(materias_aprobadas_de_pepo, set(MateriasAprobadas == [laboratorioDeComputacionI, matematicaI, matematicaII, electricidadYMagnetismo, sistemasDeProcesamientoDeDatos])) :-
@@ -201,7 +207,7 @@ test(materias_aprobadas_de_pepo, set(MateriasAprobadas == [laboratorioDeComputac
 test(pepo_no_esta_al_dia,fail) :-
     estaAlDia(pepo).
 	
-test(pole_esta_al_dia) :-
+test(pole_esta_al_dia,nondet) :-
 	estaAlDia(pole).
 
 test(pepo_no_perdio_ninguna_promocion,fail) :-
