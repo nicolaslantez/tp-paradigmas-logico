@@ -241,6 +241,9 @@ test(lucas_perdio_promocion,nondet) :-
 test(pepo_posee_matematicaIII_bloqueada_solo_por_laboratorioDeComputacionII, set(MateriasBloqueantes == [laboratorioDeComputacionII])) :-
     bloqueaA(pepo, MateriasBloqueantes, matematicaIII).  
 
+test(pepo_no_recurso_ninguna_materia,fail) :-
+    materiasRecurso(pepo, _).
+
 /* Test Parte 2 */
 test(pepo_puede_cursar_solo_algoritmosI_y_sistemasOperativos, set(MateriasQuePuedeCursar == [algoritmosI,sistemasOperativos])) :-
     puedeCursar(pepo, MateriasQuePuedeCursar).     	
