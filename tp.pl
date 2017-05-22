@@ -168,6 +168,10 @@ examenFinal(pepo, laboratorioDeComputacionII, 2).
 examenFinal(pepo, sistemasDeProcesamientoDeDatos, 6).
 examenFinal(pole, laboratorioDeComputacionI,9).
 
+/* Parte 2 */
+%PuedeCursar
+puedeCursar(Alguien,Materia) :- materiasCursadas(Alguien, MateriaCursada), esCorrelativaDe(MateriaCursada,Materia), not(materiasCursadas(Alguien, Materia)),
+                                forall(esCorrelativaDe(Correlativa, Materia), materiasCursadas(Alguien,Correlativa)).
 
 %Tests
 :- begin_tests(cursada_universitaria).
@@ -217,7 +221,11 @@ test(lucas_perdio_promocion,nondet) :-
     perdioPromocion(lucas,_).
     
 test(pepo_posee_matematicaIII_bloqueada_solo_por_laboratorioDeComputacionII, set(MateriasBloqueantes == [laboratorioDeComputacionII])) :-
-    bloqueaA(pepo, MateriasBloqueantes, matematicaIII).       	
+    bloqueaA(pepo, MateriasBloqueantes, matematicaIII).  
+
+/* Test Parte 2 */
+test(pepo_puede_cursar_solo_algoritmosI_y_sistemasOperativos, set(MateriasQuePuedeCursar == [algoritmosI,sistemasOperativos])) :-
+    puedeCursar(pepo, MateriasQuePuedeCursar).     	
 
 :- end_tests(cursada_universitaria).
 
