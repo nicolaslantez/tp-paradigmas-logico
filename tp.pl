@@ -182,7 +182,7 @@ puedeCursar(Alguien,Materia) :- materiasCursadas(Alguien, MateriaCursada), esCor
 
 puedeCursar(Alguien,Materia) :- cursada(Alguien,Materia,_,_), not(materiasCursadas(Alguien, Materia)).
 
-puedeCursar(Alguien,electricidadYMagnetismo) :- not(materiasCursadas(Alguien, electricidadYMagnetismo)).
+puedeCursar(Alguien,Materia) :- esMateriaInicial(Materia), not(materiasCursadas(Alguien, Materia)).
 
 %Punto2y3
 cursoEn(Alguien, Materia, Epoca) :- cursada(Alguien, Materia, _, Epoca).
