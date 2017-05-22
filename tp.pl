@@ -69,7 +69,7 @@ hayMateriaQueHabilitaA(Materia,MateriaQueHabilita) :- esCorrelativaDe(Materia,Ma
 
 /* Punto 3-A */
 materiasCursadas(Alumno,Materias) :- 
-    cursada(Alumno,Materias,Nota),
+    cursada(Alumno,Materias,Nota,_),
     Nota >= 4.
 
 materiasCursadas(Alumno,Materias) :- rindioLibre(Alumno,Materias).
@@ -81,7 +81,7 @@ materiasAprobadas(Alumno,Materias) :-
     Nota >= 4.
 
 materiasAprobadas(Alumno,Materias) :- 
-    cursada(Alumno, Materias, Nota),
+    cursada(Alumno, Materias, Nota,_),
     promocionoMateria(Nota,Materias).
 
 promocionoMateria(Nota, Materia) :-
@@ -102,14 +102,14 @@ bloqueaA(Alumno, Materia1, Materia2) :-
 
 /* Punto 4-C */
 perdioPromocion(Alumno, Materia) :-
-    cursada(Alumno, Materia, Nota),
+    cursada(Alumno, Materia, Nota,_),
     promocionoMateria(Nota, Materia),
     hayMateriaNecesariaPara(Materia, MateriaNecesaria),
     debeFinal(Alumno, MateriaNecesaria).
 
 /* Punto 4-D */
 estaAlDia(Alumno) :-
-    cursada(Alumno,_,_),
+    cursada(Alumno,_,_,_),
     forall(materiasCursadas(Alumno, Materia), not(debeFinal(Alumno, Materia))).
 
 
@@ -145,18 +145,24 @@ esPromocionable(sistemasOperativos).
 esPromocionable(paradigmasDeProgramacion).
 
 %Cursada
-cursada(pepo, matematicaI, 8).
-cursada(pepo, electricidadYMagnetismo, 8).
-cursada(pepo, laboratorioDeComputacionI, 8).
-cursada(pepo, laboratorioDeComputacionII, 5).
-cursada(pepo, matematicaII, 6).
-cursada(pepo, matematicaIII, 4).
-cursada(pole, electricidadYMagnetismo, 7).
-cursada(pole, matematicaI, 8).
-cursada(pole, laboratorioDeComputacionI, 5).
-cursada(lucas, matematicaI, 10).
-cursada(lucas, laboratorioDeComputacionI, 5).
-cursada(lucas, laboratorioDeComputacionII, 7).
+cursada(pepo, matematicaI, 8, cuatrimestal(2012,1)).
+cursada(pepo, electricidadYMagnetismo, 8, cuatrimestal(2012,1)).
+cursada(pepo, laboratorioDeComputacionI, 8, cuatrimestal(2012,1)).
+cursada(pepo, laboratorioDeComputacionII, 5, cuatrimestal(2012,2)).
+cursada(pepo, matematicaII, 6, cuatrimestal(2012,2)).
+cursada(pepo, matematicaIII, 4, anual(2013)).
+cursada(pablito, matematicaI, 8, cuatrimestal(2013,1)).
+cursada(pablito, laboratorioDeComputacionI, 10, cuatrimestal(2013,2)).
+cursada(pablito, electricidadYMagnetismo, 9, verano(2014,febrero)).
+
+cursada(pole, electricidadYMagnetismo, 7, cuatrimestal(2012,1)).
+cursada(pole, matematicaI, 8, cuatrimestal(2012,1)).
+cursada(pole, laboratorioDeComputacionI, 5, cuatrimestal(2012,1)).
+cursada(lucas, matematicaI, 10, cuatrimestal(2013,2)).
+cursada(lucas, laboratorioDeComputacionI, 5, cuatrimestal(2013,2)).
+cursada(lucas, laboratorioDeComputacionII, 7, cuatrimestal(2012,2)).
+cursada(nico, matematicaI, 2, cuatrimestal(2012,1)).
+cursada(nico, matematicaI, 7, anual(2013)).
 
 %RindioLibre
 rindioLibre(pepo, sistemasDeProcesamientoDeDatos).
@@ -170,8 +176,16 @@ examenFinal(pole, laboratorioDeComputacionI,9).
 
 /* Parte 2 */
 %PuedeCursar
+%Punto1
 puedeCursar(Alguien,Materia) :- materiasCursadas(Alguien, MateriaCursada), esCorrelativaDe(MateriaCursada,Materia), not(materiasCursadas(Alguien, Materia)),
                                 forall(esCorrelativaDe(Correlativa, Materia), materiasCursadas(Alguien,Correlativa)).
+
+%Punto2y3
+cursoEn(Alguien, Materia, Epoca) :- cursada(Alguien, Materia, _, Epoca).
+
+materiasRecurso(Alguien, Materia) :- cursoEn(Alguien, Materia, Epoca), cursoEnEsaEpoca(Alguien, Materia, Epoca).
+
+cursoEnEsaEpoca(Alguien, Materia, Epoca) :- cursoEn(Alguien, Materia, OtraEpoca), Epoca \= OtraEpoca.
 
 %Tests
 :- begin_tests(cursada_universitaria).
