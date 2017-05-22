@@ -180,6 +180,10 @@ examenFinal(pole, laboratorioDeComputacionI,9).
 puedeCursar(Alguien,Materia) :- materiasCursadas(Alguien, MateriaCursada), esCorrelativaDe(MateriaCursada,Materia), not(materiasCursadas(Alguien, Materia)),
                                 forall(esCorrelativaDe(Correlativa, Materia), materiasCursadas(Alguien,Correlativa)).
 
+puedeCursar(Alguien,Materia) :- cursada(Alguien,Materia,_,_), not(materiasCursadas(Alguien, Materia)).
+
+puedeCursar(Alguien,electricidadYMagnetismo) :- not(materiasCursadas(Alguien, electricidadYMagnetismo)).
+
 %Punto2y3
 cursoEn(Alguien, Materia, Epoca) :- cursada(Alguien, Materia, _, Epoca).
 
