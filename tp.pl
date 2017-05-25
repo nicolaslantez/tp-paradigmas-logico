@@ -162,7 +162,7 @@ cursada(lucas, matematicaI, 10, cuatrimestal(2013,2)).
 cursada(lucas, laboratorioDeComputacionI, 5, cuatrimestal(2013,2)).
 cursada(lucas, laboratorioDeComputacionII, 7, cuatrimestal(2012,2)).
 cursada(nico, matematicaI, 2, cuatrimestal(2012,1)).
-cursada(nico, matematicaI, 7, anual(2013)).
+
 
 %RindioLibre
 rindioLibre(pepo, sistemasDeProcesamientoDeDatos).
@@ -177,19 +177,39 @@ examenFinal(pole, laboratorioDeComputacionI,9).
 /* Parte 2 */
 %PuedeCursar
 %Punto1
-puedeCursar(Alguien,Materia) :- materiasCursadas(Alguien, MateriaCursada), esCorrelativaDe(MateriaCursada,Materia), not(materiasCursadas(Alguien, Materia)),
+/*puedeCursar(Alguien,Materia) :- materiasCursadas(Alguien, MateriaCursada), hayMateriaQueHabilitaA(MateriaCursada,Materia), noCursoLaMateria(Alguien,Materia),
                                 forall(esCorrelativaDe(Correlativa, Materia), materiasCursadas(Alguien,Correlativa)).
 
-puedeCursar(Alguien,Materia) :- cursada(Alguien,Materia,_,_), not(materiasCursadas(Alguien, Materia)).
+puedeCursar(Alguien,Materia) :- cursada(Alguien,Materia,_,_), noCursoLaMateria(Alguien,Materia). 
 
-puedeCursar(Alguien,Materia) :- esMateriaInicial(Materia), not(materiasCursadas(Alguien, Materia)).
+puedeCursar(Alguien,Materia) :- esMateriaInicial(Materia), noCursoLaMateria(Alguien,Materia). */
+
+noCursoLaMateria(Alguien,Materia) :- not(materiasCursadas(Alguien, Materia)).
+
+puedeCursar(Alumno, Materia):-
+    esMateria(Materia,_),
+    noCursoLaMateria(Alumno, Materia),
+    aproboCorrelativas(Alumno, Materia).
+    
+puedeCursar(Alumno, Materia):-
+    cursada(Alumno,Materia,_,_),
+    noCursoLaMateria(Alumno, Materia).
+    
+puedeCursar(Alumno, Materia):-
+    esMateriaInicial(Materia),
+    noCursoLaMateria(Alumno, Materia).
+    
+aproboCorrelativas(Alumno, Materia):-
+    forall(hayMateriaNecesariaPara(Materia, OtraMateria), materiasCursadas(Alumno, OtraMateria)).
+
+noCursoMateria(Alumno, Materia):-
+    not(cursada(Alumno,Materia,_,_)).
 
 %Punto2y3
 cursoEn(Alguien, Materia, Epoca) :- cursada(Alguien, Materia, _, Epoca).
 
-materiasRecurso(Alguien, Materia) :- cursoEn(Alguien, Materia, Epoca), cursoEnEsaEpoca(Alguien, Materia, Epoca).
+materiasRecurso(Alguien, Materia) :- cursoEn(Alguien, Materia, Epoca), cursoEn(Alguien, Materia, OtraEpoca), Epoca \= OtraEpoca.
 
-cursoEnEsaEpoca(Alguien, Materia, Epoca) :- cursoEn(Alguien, Materia, OtraEpoca), Epoca \= OtraEpoca.
 
 %Tests
 :- begin_tests(cursada_universitaria).
@@ -249,7 +269,3 @@ test(pepo_puede_cursar_solo_algoritmosI_y_sistemasOperativos, set(MateriasQuePue
     puedeCursar(pepo, MateriasQuePuedeCursar).     	
 
 :- end_tests(cursada_universitaria).
-
-
-
-
