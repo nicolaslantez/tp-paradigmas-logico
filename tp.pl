@@ -177,33 +177,15 @@ examenFinal(pole, laboratorioDeComputacionI,9).
 /* Parte 2 */
 %PuedeCursar
 %Punto1
-/*puedeCursar(Alguien,Materia) :- materiasCursadas(Alguien, MateriaCursada), hayMateriaQueHabilitaA(MateriaCursada,Materia), noCursoLaMateria(Alguien,Materia),
-                                forall(esCorrelativaDe(Correlativa, Materia), materiasCursadas(Alguien,Correlativa)).
-
-puedeCursar(Alguien,Materia) :- cursada(Alguien,Materia,_,_), noCursoLaMateria(Alguien,Materia). 
-
-puedeCursar(Alguien,Materia) :- esMateriaInicial(Materia), noCursoLaMateria(Alguien,Materia). */
-
-noCursoLaMateria(Alguien,Materia) :- not(materiasCursadas(Alguien, Materia)).
-
 puedeCursar(Alumno, Materia):-
     esMateria(Materia,_),
     noCursoLaMateria(Alumno, Materia),
     aproboCorrelativas(Alumno, Materia).
-    
-puedeCursar(Alumno, Materia):-
-    cursada(Alumno,Materia,_,_),
-    noCursoLaMateria(Alumno, Materia).
-    
-puedeCursar(Alumno, Materia):-
-    esMateriaInicial(Materia),
-    noCursoLaMateria(Alumno, Materia).
-    
+
 aproboCorrelativas(Alumno, Materia):-
     forall(hayMateriaNecesariaPara(Materia, OtraMateria), materiasCursadas(Alumno, OtraMateria)).
 
-noCursoMateria(Alumno, Materia):-
-    not(cursada(Alumno,Materia,_,_)).
+noCursoLaMateria(Alguien,Materia) :- not(materiasCursadas(Alguien, Materia)).
 
 %Punto2y3
 cursoEn(Alguien, Materia, Epoca) :- cursada(Alguien, Materia, _, Epoca).
