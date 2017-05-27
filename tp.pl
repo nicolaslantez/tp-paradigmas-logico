@@ -145,23 +145,29 @@ esPromocionable(sistemasOperativos).
 esPromocionable(paradigmasDeProgramacion).
 
 %Cursada
-cursada(pepo, matematicaI, 8, cuatrimestal(2012,1)).
-cursada(pepo, electricidadYMagnetismo, 8, cuatrimestal(2012,1)).
-cursada(pepo, laboratorioDeComputacionI, 8, cuatrimestal(2012,1)).
-cursada(pepo, laboratorioDeComputacionII, 5, cuatrimestal(2012,2)).
-cursada(pepo, matematicaII, 6, cuatrimestal(2012,2)).
+cursada(pepo, matematicaI, 8, cuatrimestral(2012,1)).
+cursada(pepo, electricidadYMagnetismo, 8, cuatrimestral(2012,1)).
+cursada(pepo, laboratorioDeComputacionI, 8, cuatrimestral(2012,1)).
+cursada(pepo, laboratorioDeComputacionII, 5, cuatrimestral(2012,2)).
+cursada(pepo, matematicaII, 6, cuatrimestral(2012,2)).
 cursada(pepo, matematicaIII, 4, anual(2013)).
-cursada(pablito, matematicaI, 8, cuatrimestal(2013,1)).
-cursada(pablito, laboratorioDeComputacionI, 10, cuatrimestal(2013,2)).
+cursada(pablito, matematicaI, 8, cuatrimestral(2013,1)).
+cursada(pablito, laboratorioDeComputacionI, 10, cuatrimestral(2013,2)).
 cursada(pablito, electricidadYMagnetismo, 9, verano(2014,febrero)).
 
-cursada(pole, electricidadYMagnetismo, 7, cuatrimestal(2012,1)).
-cursada(pole, matematicaI, 8, cuatrimestal(2012,1)).
-cursada(pole, laboratorioDeComputacionI, 5, cuatrimestal(2012,1)).
-cursada(lucas, matematicaI, 10, cuatrimestal(2013,2)).
-cursada(lucas, laboratorioDeComputacionI, 5, cuatrimestal(2013,2)).
-cursada(lucas, laboratorioDeComputacionII, 7, cuatrimestal(2012,2)).
-cursada(nico, matematicaI, 2, cuatrimestal(2012,1)).
+cursada(pole, electricidadYMagnetismo, 7, cuatrimestral(2012,1)).
+cursada(pole, matematicaI, 8, cuatrimestral(2012,1)).
+cursada(pole, laboratorioDeComputacionI, 5, cuatrimestral(2012,1)).
+cursada(lucas, matematicaI, 10, cuatrimestral(2013,2)).
+cursada(lucas, laboratorioDeComputacionI, 5, cuatrimestral(2013,2)).
+cursada(lucas, laboratorioDeComputacionII, 7, cuatrimestral(2012,2)).
+cursada(nico, matematicaI, 2, cuatrimestral(2012,1)).
+cursada(nico, matematicaI, 3, cuatrimestral(2012,2)).
+cursada(nico, matematicaI, 9, cuatrimestral(2013,2)).
+cursada(test, matematicaI, 9, cuatrimestral(2013,1)).
+cursada(test, matematicaII, 8, cuatrimestral(2013,2)).
+
+
 
 
 %RindioLibre
@@ -190,8 +196,90 @@ noCursoLaMateria(Alguien,Materia) :- not(materiasCursadas(Alguien, Materia)).
 %Punto2y3
 cursoEn(Alguien, Materia, Epoca) :- cursada(Alguien, Materia, _, Epoca).
 
-materiasRecurso(Alguien, Materia) :- cursoEn(Alguien, Materia, Epoca), cursoEn(Alguien, Materia, OtraEpoca), Epoca \= OtraEpoca.
+materiasRecurso(Alguien, Materia) :- 
+    cursoEn(Alguien, Materia, Epoca), 
+    cursoEn(Alguien, Materia, OtraEpoca),
+    Epoca \= OtraEpoca.
 
+
+/* PUNTO 4  */
+
+/* A */
+
+sinDescanso(Estudiante) :-
+    cursada(Estudiante, Materia, Nota, cuatrimestral(Anio, Cuatrimestre)),
+    Nota < 4,
+    cursada(Estudiante, Materia, _, cuatrimestral(OtroAnio, OtroCuatrimestre)),
+    %% OtraNota >= 4,
+    esSiguienteCuatrimestre(Anio, Cuatrimestre, OtroAnio, OtroCuatrimestre).
+
+
+sinDescanso(Estudiante) :-
+    cursada(Estudiante, Materia, Nota, anual(Anio)),
+    Nota < 4,
+    cursoEnLaSiguienteCursada(Estudiante, Materia, Anio).
+
+sinDescanso(Estudiante) :-
+    cursada(Estudiante, Materia, Nota, verano(Anio, _)),
+    Nota < 4,
+    cursoEnLaSiguienteCursadaDespuesDelVerano(Estudiante, Materia, Anio).
+
+
+esSiguienteCuatrimestre(Anio, Cuatrimestre, OtroAnio, OtroCuatrimestre) :-
+    OtroAnio is Anio,
+    OtroCuatrimestre is Cuatrimestre + 1.
+
+esSiguienteCuatrimestre(Anio, _, OtroAnio, 1) :-
+    OtroAnio is Anio + 1.
+
+cursoEnLaSiguienteCursada(Estudiante, Materia, Anio) :-
+    cursada(Estudiante, Materia, OtraNota, anual(OtroAnio)),
+    OtraNota >= 4,
+    OtroAnio is Anio + 1.
+
+cursoEnLaSiguienteCursada(Estudiante, Materia, Anio) :-
+    cursada(Estudiante, Materia, OtraNota, cuatrimestral(OtroAnio, 1)),
+    OtraNota >= 4,
+    OtroAnio is Anio + 1.
+
+/* SE PUEDE EVITAR REPETIR ESTOS DOS CON RESPECTO A LOS DOS DE ARRIBA */ /* ABSTRAER ESE OTROANIO IS ANIO +1 y IS ANIO? */
+
+cursoEnLaSiguienteCursadaDespuesDelVerano(Estudiante, Materia, Anio) :-
+    cursada(Estudiante, Materia, OtraNota, anual(OtroAnio)),
+    OtraNota >= 4,
+    OtroAnio is Anio.
+
+cursoEnLaSiguienteCursadaDespuesDelVerano(Estudiante, Materia, Anio) :-
+    cursada(Estudiante, Materia, OtraNota, cuatrimestral(OtroAnio, 1)),
+    OtraNota >= 4,
+    OtroAnio is Anio.
+
+/* B */
+invicto(Estudiante) :-
+    cursada(Estudiante, _, _, _),
+    not(materiasRecurso(Estudiante, _)).
+
+/* C */
+repechaje(Estudiante, Materia) :-
+    cursada(Estudiante, Materia, Nota, anual(Anio)),
+    Nota < 4,
+    cursada(Estudiante, Materia, OtraNota, cuatrimestral(OtroAnio, 1)),
+    OtroAnio is Anio + 1,
+    OtraNota >= 7.
+
+/* D */
+buenasCursadas(Estudiante) :-
+    cursada(Estudiante, _, _, _),
+    forall(cursada(Estudiante, Materia, Nota, _), promocionoMateria(Nota, Materia)).    
+
+/* E */
+seLoQueHicisteElVeranoPasado(Estudiante) :-
+    forrall(cursada(Estudiante, Materia, _, cuatrimestral(Anio,_)), cursoAlgunaMateriaEnVerano(Anio)),
+    forrall(cursada(Estudiante, Materia, _, anual(OtroAnio)), cursoAlgunaMateriaEnVerano(OtroAnio)).
+
+
+cursoAlgunaMateriaEnVerano(Anio) :-
+    cursada(Estudiante, Materia, _, verano(Anio, _)).
 
 %Tests
 :- begin_tests(cursada_universitaria).
