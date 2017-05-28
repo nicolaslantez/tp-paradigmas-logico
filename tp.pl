@@ -165,6 +165,8 @@ cursada(nico, matematicaI, 2, cuatrimestral(2012,1)).
 cursada(nico, matematicaI, 3, cuatrimestral(2012,2)).
 cursada(nico, matematicaI, 9, cuatrimestral(2013,2)).
 cursada(test, matematicaI, 5, cuatrimestral(2015,1)).
+cursada(testRepechaje, sistemasDeProcesamientoDeDatos, 3, anual(2016)).
+cursada(testRepechaje, sistemasDeProcesamientoDeDatos, 9, cuatrimestral(2017,1)).
 
 %RindioLibre
 rindioLibre(pepo, sistemasDeProcesamientoDeDatos).
