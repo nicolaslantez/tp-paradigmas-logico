@@ -207,7 +207,7 @@ materiasRecurso(Alguien, Materia) :-
 
 sinDescanso(Estudiante) :-
     cursada(Estudiante, Materia, Nota, cuatrimestral(Anio, Cuatrimestre)),
-    Nota < 4,
+    desaproboCursada(Nota),
     cursada(Estudiante, Materia, _, cuatrimestral(OtroAnio, OtroCuatrimestre)),
     %% OtraNota >= 4,
     esSiguienteCuatrimestre(Anio, Cuatrimestre, OtroAnio, OtroCuatrimestre).
@@ -215,14 +215,15 @@ sinDescanso(Estudiante) :-
 
 sinDescanso(Estudiante) :-
     cursada(Estudiante, Materia, Nota, anual(Anio)),
-    Nota < 4,
+    desaproboCursada(Nota),
     cursoEnLaSiguienteCursada(Estudiante, Materia, Anio).
 
 sinDescanso(Estudiante) :-
     cursada(Estudiante, Materia, Nota, verano(Anio, _)),
-    Nota < 4,
+    desaproboCursada(Nota),
     cursoEnLaSiguienteCursadaDespuesDelVerano(Estudiante, Materia, Anio).
 
+desaproboCursada(Nota) :- Nota < 4.
 
 esSiguienteCuatrimestre(Anio, Cuatrimestre, OtroAnio, OtroCuatrimestre) :-
     OtroAnio is Anio,
@@ -261,7 +262,7 @@ invicto(Estudiante) :-
 /* C */
 repechaje(Estudiante, Materia) :-
     cursada(Estudiante, Materia, Nota, anual(Anio)),
-    Nota < 4,
+    desaproboCursada(Nota),
     cursada(Estudiante, Materia, OtraNota, cuatrimestral(OtroAnio, 1)),
     OtroAnio is Anio + 1,
     OtraNota >= 7.
