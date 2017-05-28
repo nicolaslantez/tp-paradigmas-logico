@@ -206,9 +206,6 @@ materiasRecurso(Alguien, Materia) :-
 /* PUNTO 4  */
 
 /* A */
-
-
-
 sinDescanso(Estudiante) :-
     forall(materiasRecurso(Estudiante, Materia), cursoEnLaSiguienteCursada(Estudiante, Materia)).
 
@@ -242,56 +239,7 @@ cursoEnLaSiguienteCursada(Estudiante, Materia) :-
     cursada(Estudiante, Materia, _, verano(Anio, _)),
     cursada(Estudiante, Materia, _, cuatrimestral(Anio, 1)).
 
-
-
-
-%% sinDescanso(Estudiante) :-
-%%     cursada(Estudiante, Materia, Nota, cuatrimestral(Anio, Cuatrimestre)),
-%%     desaproboCursada(Nota),
-%%     cursada(Estudiante, Materia, _, cuatrimestral(OtroAnio, OtroCuatrimestre)),
-%%     esSiguienteCuatrimestre(Anio, Cuatrimestre, OtroAnio, OtroCuatrimestre).
-
-
-%% sinDescanso(Estudiante) :-
-%%     cursada(Estudiante, Materia, Nota, anual(Anio)),
-%%     desaproboCursada(Nota),
-%%     cursoEnLaSiguienteCursada(Estudiante, Materia, Anio).
-
-%% sinDescanso(Estudiante) :-
-%%     cursada(Estudiante, Materia, Nota, verano(Anio, _)),
-%%     desaproboCursada(Nota),
-%%     cursoEnLaSiguienteCursadaDespuesDelVerano(Estudiante, Materia, Anio).
-
 desaproboCursada(Nota) :- Nota < 4.
-
-%% esSiguienteCuatrimestre(Anio, Cuatrimestre, OtroAnio, OtroCuatrimestre) :-
-%%     OtroAnio is Anio,
-%%     OtroCuatrimestre is Cuatrimestre + 1.
-
-%% esSiguienteCuatrimestre(Anio, _, OtroAnio, 1) :-
-%%     OtroAnio is Anio + 1.
-
-%% cursoEnLaSiguienteCursada(Estudiante, Materia, Anio) :-
-%%     cursada(Estudiante, Materia, OtraNota, anual(OtroAnio)),
-%%     OtraNota >= 4,
-%%     OtroAnio is Anio + 1.
-
-%% cursoEnLaSiguienteCursada(Estudiante, Materia, Anio) :-
-%%     cursada(Estudiante, Materia, OtraNota, cuatrimestral(OtroAnio, 1)),
-%%     OtraNota >= 4,
-%%     OtroAnio is Anio + 1.
-
-%% /* SE PUEDE EVITAR REPETIR ESTOS DOS CON RESPECTO A LOS DOS DE ARRIBA */ /* ABSTRAER ESE OTROANIO IS ANIO +1 y IS ANIO? */
-
-%% cursoEnLaSiguienteCursadaDespuesDelVerano(Estudiante, Materia, Anio) :-
-%%     cursada(Estudiante, Materia, OtraNota, anual(OtroAnio)),
-%%     OtraNota >= 4,
-%%     OtroAnio is Anio.
-
-%% cursoEnLaSiguienteCursadaDespuesDelVerano(Estudiante, Materia, Anio) :-
-%%     cursada(Estudiante, Materia, OtraNota, cuatrimestral(OtroAnio, 1)),
-%%     OtraNota >= 4,
-%%     OtroAnio is Anio.
 
 /* B */
 
