@@ -162,8 +162,8 @@ cursada(lucas, matematicaI, 10, cuatrimestral(2013,2)).
 cursada(lucas, laboratorioDeComputacionI, 5, cuatrimestral(2013,2)).
 cursada(lucas, laboratorioDeComputacionII, 7, cuatrimestral(2012,2)).
 cursada(nico, matematicaI, 2, cuatrimestral(2012,1)).
-cursada(nico, matematicaI, 3, cuatrimestral(2012,2)).
-cursada(nico, matematicaI, 9, cuatrimestral(2013,2)).
+cursada(nico, matematicaI, 3, cuatrimestral(2013,2)).
+%% cursada(nico, matematicaI, 9, cuatrimestral(2013,2)).
 
 
 
@@ -190,6 +190,8 @@ puedeCursar(Alumno, Materia):-
 aproboCorrelativas(Alumno, Materia):-
     forall(hayMateriaNecesariaPara(Materia, OtraMateria), materiasCursadas(Alumno, OtraMateria)).
 
+
+
 noCursoLaMateria(Alguien,Materia) :- not(materiasCursadas(Alguien, Materia)).
 
 %Punto2y3
@@ -205,61 +207,102 @@ materiasRecurso(Alguien, Materia) :-
 
 /* A */
 
-sinDescanso(Estudiante) :-
-    cursada(Estudiante, Materia, Nota, cuatrimestral(Anio, Cuatrimestre)),
-    desaproboCursada(Nota),
-    cursada(Estudiante, Materia, _, cuatrimestral(OtroAnio, OtroCuatrimestre)),
-    %% OtraNota >= 4,
-    esSiguienteCuatrimestre(Anio, Cuatrimestre, OtroAnio, OtroCuatrimestre).
 
 
 sinDescanso(Estudiante) :-
-    cursada(Estudiante, Materia, Nota, anual(Anio)),
-    desaproboCursada(Nota),
-    cursoEnLaSiguienteCursada(Estudiante, Materia, Anio).
+    forall(materiasRecurso(Estudiante, Materia), cursoEnLaSiguienteCursada(Estudiante, Materia)).
 
-sinDescanso(Estudiante) :-
-    cursada(Estudiante, Materia, Nota, verano(Anio, _)),
-    desaproboCursada(Nota),
-    cursoEnLaSiguienteCursadaDespuesDelVerano(Estudiante, Materia, Anio).
+/* CASO: MATERIAS CUATRIMESTRALES */
+cursoEnLaSiguienteCursada(Estudiante, Materia) :-
+    cursada(Estudiante, Materia, _, cuatrimestral(Anio, 1)),
+    cursada(Estudiante, Materia, _, cuatrimestral(Anio, 2)).
+
+cursoEnLaSiguienteCursada(Estudiante, Materia) :-
+    cursada(Estudiante, Materia, _, cuatrimestral(Anio, 2)),
+    cursada(Estudiante, Materia, _, cuatrimestral(OtroAnio, 1)),
+    OtroAnio is Anio +1.
+
+/* CASO: MATERIAS ANUALES */
+cursoEnLaSiguienteCursada(Estudiante, Materia) :-
+    cursada(Estudiante, Materia, _, anual(Anio)),
+    cursada(Estudiante, Materia, _, anual(OtroAnio)),
+    OtroAnio is Anio +1.
+
+cursoEnLaSiguienteCursada(Estudiante, Materia) :-
+    cursada(Estudiante, Materia, _, anual(Anio)),
+    cursada(Estudiante, Materia, _, cuatrimestral(OtroAnio, 1)),
+    OtroAnio is Anio +1.
+
+/* CASO: MATERIAS DE VERANO*/
+cursoEnLaSiguienteCursada(Estudiante, Materia) :-
+    cursada(Estudiante, Materia, _, verano(Anio, _)),
+    cursada(Estudiante, Materia, _, anual(Anio)).
+
+cursoEnLaSiguienteCursada(Estudiante, Materia) :-
+    cursada(Estudiante, Materia, _, verano(Anio, _)),
+    cursada(Estudiante, Materia, _, cuatrimestral(Anio, 1)).
+
+
+
+
+%% sinDescanso(Estudiante) :-
+%%     cursada(Estudiante, Materia, Nota, cuatrimestral(Anio, Cuatrimestre)),
+%%     desaproboCursada(Nota),
+%%     cursada(Estudiante, Materia, _, cuatrimestral(OtroAnio, OtroCuatrimestre)),
+%%     esSiguienteCuatrimestre(Anio, Cuatrimestre, OtroAnio, OtroCuatrimestre).
+
+
+%% sinDescanso(Estudiante) :-
+%%     cursada(Estudiante, Materia, Nota, anual(Anio)),
+%%     desaproboCursada(Nota),
+%%     cursoEnLaSiguienteCursada(Estudiante, Materia, Anio).
+
+%% sinDescanso(Estudiante) :-
+%%     cursada(Estudiante, Materia, Nota, verano(Anio, _)),
+%%     desaproboCursada(Nota),
+%%     cursoEnLaSiguienteCursadaDespuesDelVerano(Estudiante, Materia, Anio).
 
 desaproboCursada(Nota) :- Nota < 4.
 
-esSiguienteCuatrimestre(Anio, Cuatrimestre, OtroAnio, OtroCuatrimestre) :-
-    OtroAnio is Anio,
-    OtroCuatrimestre is Cuatrimestre + 1.
+%% esSiguienteCuatrimestre(Anio, Cuatrimestre, OtroAnio, OtroCuatrimestre) :-
+%%     OtroAnio is Anio,
+%%     OtroCuatrimestre is Cuatrimestre + 1.
 
-esSiguienteCuatrimestre(Anio, _, OtroAnio, 1) :-
-    OtroAnio is Anio + 1.
+%% esSiguienteCuatrimestre(Anio, _, OtroAnio, 1) :-
+%%     OtroAnio is Anio + 1.
 
-cursoEnLaSiguienteCursada(Estudiante, Materia, Anio) :-
-    cursada(Estudiante, Materia, OtraNota, anual(OtroAnio)),
-    OtraNota >= 4,
-    OtroAnio is Anio + 1.
+%% cursoEnLaSiguienteCursada(Estudiante, Materia, Anio) :-
+%%     cursada(Estudiante, Materia, OtraNota, anual(OtroAnio)),
+%%     OtraNota >= 4,
+%%     OtroAnio is Anio + 1.
 
-cursoEnLaSiguienteCursada(Estudiante, Materia, Anio) :-
-    cursada(Estudiante, Materia, OtraNota, cuatrimestral(OtroAnio, 1)),
-    OtraNota >= 4,
-    OtroAnio is Anio + 1.
+%% cursoEnLaSiguienteCursada(Estudiante, Materia, Anio) :-
+%%     cursada(Estudiante, Materia, OtraNota, cuatrimestral(OtroAnio, 1)),
+%%     OtraNota >= 4,
+%%     OtroAnio is Anio + 1.
 
-/* SE PUEDE EVITAR REPETIR ESTOS DOS CON RESPECTO A LOS DOS DE ARRIBA */ /* ABSTRAER ESE OTROANIO IS ANIO +1 y IS ANIO? */
+%% /* SE PUEDE EVITAR REPETIR ESTOS DOS CON RESPECTO A LOS DOS DE ARRIBA */ /* ABSTRAER ESE OTROANIO IS ANIO +1 y IS ANIO? */
 
-cursoEnLaSiguienteCursadaDespuesDelVerano(Estudiante, Materia, Anio) :-
-    cursada(Estudiante, Materia, OtraNota, anual(OtroAnio)),
-    OtraNota >= 4,
-    OtroAnio is Anio.
+%% cursoEnLaSiguienteCursadaDespuesDelVerano(Estudiante, Materia, Anio) :-
+%%     cursada(Estudiante, Materia, OtraNota, anual(OtroAnio)),
+%%     OtraNota >= 4,
+%%     OtroAnio is Anio.
 
-cursoEnLaSiguienteCursadaDespuesDelVerano(Estudiante, Materia, Anio) :-
-    cursada(Estudiante, Materia, OtraNota, cuatrimestral(OtroAnio, 1)),
-    OtraNota >= 4,
-    OtroAnio is Anio.
+%% cursoEnLaSiguienteCursadaDespuesDelVerano(Estudiante, Materia, Anio) :-
+%%     cursada(Estudiante, Materia, OtraNota, cuatrimestral(OtroAnio, 1)),
+%%     OtraNota >= 4,
+%%     OtroAnio is Anio.
 
 /* B */
+
+/* Indica si un estudiante nunca recursó una materia */
 invicto(Estudiante) :-
     cursada(Estudiante, _, _, _),
     not(materiasRecurso(Estudiante, _)).
 
 /* C */
+
+/* Determina si el estudiante curso una materia de forma anual, reprobó, la volvio a cursar en el siguiente cuatrimestre de forma cuatrimestral y la promocionó */
 repechaje(Estudiante, Materia) :-
     cursada(Estudiante, Materia, Nota, anual(Anio)),
     desaproboCursada(Nota),
@@ -268,11 +311,15 @@ repechaje(Estudiante, Materia) :-
     OtraNota >= 7.
 
 /* D */
+
+/* Se fija si todas las materias promocionables cursadas fueron promocionadas por un alumno */
 buenasCursadas(Estudiante) :-
     cursada(Estudiante, _, _, _),
     forall(cursada(Estudiante, Materia, Nota, _), promocionoMateria(Nota, Materia)).    
 
 /* E */
+
+/* Identifica todos los años en los que cursó alguna materia anual o cuatrimestral y se fija que haya cursado alguna materia de verano en esos años */
 seLoQueHicisteElVeranoPasado(Estudiante) :-
     forall(cursada(Estudiante, _, _, cuatrimestral(Anio, _)), cursoAlgunaMateriaEnVerano(Estudiante, Anio)),
     forall(cursada(Estudiante, _, _, anual(OtroAnio)), cursoAlgunaMateriaEnVerano(Estudiante, OtroAnio)).
