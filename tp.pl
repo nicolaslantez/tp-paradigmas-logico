@@ -162,21 +162,9 @@ cursada(lucas, matematicaI, 10, cuatrimestral(2013,2)).
 cursada(lucas, laboratorioDeComputacionI, 5, cuatrimestral(2013,2)).
 cursada(lucas, laboratorioDeComputacionII, 7, cuatrimestral(2012,2)).
 cursada(nico, matematicaI, 2, cuatrimestral(2012,1)).
-<<<<<<< Updated upstream
-cursada(nico, matematicaI, 3, cuatrimestral(2013,2)).
-
-/*Para el punto 5 que tenga perfil unico */
-cursada(test, electricidadYMagnetismo, 5, cuatrimestral(2017,2)).
-%% cursada(nico, matematicaI, 9, cuatrimestral(2013,2)).
-
-
-
-
-=======
 cursada(nico, matematicaI, 3, cuatrimestral(2012,2)).
 cursada(nico, matematicaI, 9, cuatrimestral(2013,2)).
-cursada(test, matematicaI, 8, cuatrimestral(2015,1)).
->>>>>>> Stashed changes
+cursada(test, matematicaI, 5, cuatrimestral(2015,1)).
 
 %RindioLibre
 rindioLibre(pepo, sistemasDeProcesamientoDeDatos).
@@ -291,7 +279,6 @@ cursoAlgunaMateriaEnVerano(Estudiante, Anio) :-
     cursada(Estudiante, _, _, verano(AnioVerano, _)).
 
 /* Punto 5 */
-<<<<<<< Updated upstream
 perfil(Estudiante, seLoQueHicisteElVeranoPasado) :-
     seLoQueHicisteElVeranoPasado(Estudiante).
 
@@ -304,6 +291,9 @@ perfil(Estudiante, invicto) :-
 perfil(Estudiante, sinDescanso) :-
     sinDescanso(Estudiante).
 
+perfil(Estudiante, repechaje) :-
+    esMateria(Materia,_),
+    repechaje(Estudiante,Materia).
 
 tieneUnicoPerfil(Alumno):-
     perfil(Alumno, _),
@@ -313,8 +303,6 @@ tieneOtroPerfil(Alumno):-
     perfil(Alumno, Perfil),
     perfil(Alumno, OtroPerfil),
     Perfil \= OtroPerfil.
-=======
->>>>>>> Stashed changes
 
 /* Punto 6 */
 valoracionDeCursada(Estudiante, Materia, ValoracionDeCursada) :-
