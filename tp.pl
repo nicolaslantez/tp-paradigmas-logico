@@ -162,6 +162,7 @@ cursada(lucas, matematicaI, 10, cuatrimestral(2013,2)).
 cursada(lucas, laboratorioDeComputacionI, 5, cuatrimestral(2013,2)).
 cursada(lucas, laboratorioDeComputacionII, 7, cuatrimestral(2012,2)).
 cursada(nico, matematicaI, 2, cuatrimestral(2012,1)).
+<<<<<<< Updated upstream
 cursada(nico, matematicaI, 3, cuatrimestral(2013,2)).
 
 /*Para el punto 5 que tenga perfil unico */
@@ -171,6 +172,11 @@ cursada(test, electricidadYMagnetismo, 5, cuatrimestral(2017,2)).
 
 
 
+=======
+cursada(nico, matematicaI, 3, cuatrimestral(2012,2)).
+cursada(nico, matematicaI, 9, cuatrimestral(2013,2)).
+cursada(test, matematicaI, 8, cuatrimestral(2015,1)).
+>>>>>>> Stashed changes
 
 %RindioLibre
 rindioLibre(pepo, sistemasDeProcesamientoDeDatos).
@@ -210,6 +216,7 @@ materiasRecurso(Alguien, Materia) :-
 
 /* A */
 sinDescanso(Estudiante) :-
+    materiasRecurso(Estudiante,_),
     forall(materiasRecurso(Estudiante, Materia), cursoEnLaSiguienteCursada(Estudiante, Materia)).
 
 /* CASO: MATERIAS CUATRIMESTRALES */
@@ -278,12 +285,13 @@ seLoQueHicisteElVeranoPasado(Estudiante) :-
     forall(cursada(Estudiante, _, _, cuatrimestral(Anio, _)), cursoAlgunaMateriaEnVerano(Estudiante, Anio)),
     forall(cursada(Estudiante, _, _, anual(OtroAnio)), cursoAlgunaMateriaEnVerano(Estudiante, OtroAnio)).
 
-
+/* Se fija si curso alguna materia en el año calendario siguiente*/
 cursoAlgunaMateriaEnVerano(Estudiante, Anio) :-
     AnioVerano is Anio +1,
     cursada(Estudiante, _, _, verano(AnioVerano, _)).
 
 /* Punto 5 */
+<<<<<<< Updated upstream
 perfil(Estudiante, seLoQueHicisteElVeranoPasado) :-
     seLoQueHicisteElVeranoPasado(Estudiante).
 
@@ -305,6 +313,8 @@ tieneOtroPerfil(Alumno):-
     perfil(Alumno, Perfil),
     perfil(Alumno, OtroPerfil),
     Perfil \= OtroPerfil.
+=======
+>>>>>>> Stashed changes
 
 /* Punto 6 */
 valoracionDeCursada(Estudiante, Materia, ValoracionDeCursada) :-
