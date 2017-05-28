@@ -164,8 +164,7 @@ cursada(lucas, laboratorioDeComputacionII, 7, cuatrimestral(2012,2)).
 cursada(nico, matematicaI, 2, cuatrimestral(2012,1)).
 cursada(nico, matematicaI, 3, cuatrimestral(2012,2)).
 cursada(nico, matematicaI, 9, cuatrimestral(2013,2)).
-cursada(test, matematicaI, 9, cuatrimestral(2013,1)).
-cursada(test, matematicaII, 8, cuatrimestral(2013,2)).
+
 
 
 
@@ -274,8 +273,8 @@ buenasCursadas(Estudiante) :-
 
 /* E */
 seLoQueHicisteElVeranoPasado(Estudiante) :-
-    forrall(cursada(Estudiante, _, _, cuatrimestral(Anio, _)), cursoAlgunaMateriaEnVerano(Estudiante, Anio)),
-    forrall(cursada(Estudiante, _, _, anual(OtroAnio)), cursoAlgunaMateriaEnVerano(Estudiante, OtroAnio)).
+    forall(cursada(Estudiante, _, _, cuatrimestral(Anio, _)), cursoAlgunaMateriaEnVerano(Estudiante, Anio)),
+    forall(cursada(Estudiante, _, _, anual(OtroAnio)), cursoAlgunaMateriaEnVerano(Estudiante, OtroAnio)).
 
 
 cursoAlgunaMateriaEnVerano(Estudiante, Anio) :-
@@ -362,6 +361,24 @@ test(pepo_no_recurso_ninguna_materia,fail) :-
 
 /* Test Parte 2 */
 test(pepo_puede_cursar_solo_algoritmosI_y_sistemasOperativos, set(MateriasQuePuedeCursar == [algoritmosI,sistemasOperativos])) :-
-    puedeCursar(pepo, MateriasQuePuedeCursar).     	
+    puedeCursar(pepo, MateriasQuePuedeCursar).    
+
+
+test(pablito_lescano_posee_perfil_buenasCursadas, nondet) :-
+    buenasCursadas(pablito).	
+
+test(pablito_lescano_posee_perfil_seLoQueHicisteElVeranoPasado, nondet) :-
+    seLoQueHicisteElVeranoPasado(pablito).    
+
+test(estudiantes_invictus, set(Estudiantes = [pepo, pablito, lucas, pole])) :- /* Sumamos esos dos estudiantes que usamos para otros tests y también cumplen la condición */
+    invicto(Estudiantes).
+
+test(valoracionDeCursada_de_pepo_en_laboratorioDeComputacionII_es_3, nondet) :-
+    valoracionDeCursada(pepo, laboratorioDeComputacionII, ValoracionDeCursada),
+    ValoracionDeCursada == 3.
+
+test(valoracionDeCursada_de_pablito_en_electricidadYMagnetismo_es_4_coma_5, nondet) :-
+    valoracionDeCursada(pablito, electricidadYMagnetismo, ValoracionDeCursada),
+    ValoracionDeCursada == 4.5.
 
 :- end_tests(cursada_universitaria).
