@@ -163,6 +163,9 @@ cursada(lucas, laboratorioDeComputacionI, 5, cuatrimestral(2013,2)).
 cursada(lucas, laboratorioDeComputacionII, 7, cuatrimestral(2012,2)).
 cursada(nico, matematicaI, 2, cuatrimestral(2012,1)).
 cursada(nico, matematicaI, 3, cuatrimestral(2013,2)).
+
+/*Para el punto 5 que tenga perfil unico */
+cursada(test, electricidadYMagnetismo, 5, cuatrimestral(2017,2)).
 %% cursada(nico, matematicaI, 9, cuatrimestral(2013,2)).
 
 
@@ -280,6 +283,28 @@ cursoAlgunaMateriaEnVerano(Estudiante, Anio) :-
     AnioVerano is Anio +1,
     cursada(Estudiante, _, _, verano(AnioVerano, _)).
 
+/* Punto 5 */
+perfil(Estudiante, seLoQueHicisteElVeranoPasado) :-
+    seLoQueHicisteElVeranoPasado(Estudiante).
+
+perfil(Estudiante, buenasCursadas) :-
+    buenasCursadas(Estudiante).
+
+perfil(Estudiante, invicto) :-
+    invicto(Estudiante).
+
+perfil(Estudiante, sinDescanso) :-
+    sinDescanso(Estudiante).
+
+
+tieneUnicoPerfil(Alumno):-
+    perfil(Alumno, _),
+    not(tieneOtroPerfil(Alumno)).
+    
+tieneOtroPerfil(Alumno):-
+    perfil(Alumno, Perfil),
+    perfil(Alumno, OtroPerfil),
+    Perfil \= OtroPerfil.
 
 /* Punto 6 */
 valoracionDeCursada(Estudiante, Materia, ValoracionDeCursada) :-
