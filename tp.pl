@@ -217,18 +217,18 @@ cursoEnLaSiguienteCursada(Estudiante, Materia) :-
 cursoEnLaSiguienteCursada(Estudiante, Materia) :-
     cursada(Estudiante, Materia, _, cuatrimestral(Anio, 2)),
     cursada(Estudiante, Materia, _, cuatrimestral(OtroAnio, 1)),
-    OtroAnio is Anio +1.
+    esSiguienteAnio(OtroAnio, Anio).
 
 /* CASO: MATERIAS ANUALES */
 cursoEnLaSiguienteCursada(Estudiante, Materia) :-
     cursada(Estudiante, Materia, _, anual(Anio)),
     cursada(Estudiante, Materia, _, anual(OtroAnio)),
-    OtroAnio is Anio +1.
+    esSiguienteAnio(OtroAnio, Anio).
 
 cursoEnLaSiguienteCursada(Estudiante, Materia) :-
     cursada(Estudiante, Materia, _, anual(Anio)),
     cursada(Estudiante, Materia, _, cuatrimestral(OtroAnio, 1)),
-    OtroAnio is Anio +1.
+    esSiguienteAnio(OtroAnio, Anio).
 
 /* CASO: MATERIAS DE VERANO*/
 cursoEnLaSiguienteCursada(Estudiante, Materia) :-
@@ -240,6 +240,9 @@ cursoEnLaSiguienteCursada(Estudiante, Materia) :-
     cursada(Estudiante, Materia, _, cuatrimestral(Anio, 1)).
 
 desaproboCursada(Nota) :- Nota < 4.
+
+esSiguienteAnio(OtroAnio, Anio) :-
+    OtroAnio is Anio +1.
 
 /* B */
 
@@ -255,7 +258,7 @@ repechaje(Estudiante, Materia) :-
     cursada(Estudiante, Materia, Nota, anual(Anio)),
     desaproboCursada(Nota),
     cursada(Estudiante, Materia, OtraNota, cuatrimestral(OtroAnio, 1)),
-    OtroAnio is Anio + 1,
+    esSiguienteAnio(OtroAnio, Anio),
     OtraNota >= 7.
 
 /* D */
