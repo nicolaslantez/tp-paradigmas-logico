@@ -274,12 +274,38 @@ buenasCursadas(Estudiante) :-
 
 /* E */
 seLoQueHicisteElVeranoPasado(Estudiante) :-
-    forrall(cursada(Estudiante, Materia, _, cuatrimestral(Anio,_)), cursoAlgunaMateriaEnVerano(Anio)),
-    forrall(cursada(Estudiante, Materia, _, anual(OtroAnio)), cursoAlgunaMateriaEnVerano(OtroAnio)).
+    forrall(cursada(Estudiante, _, _, cuatrimestral(Anio, _)), cursoAlgunaMateriaEnVerano(Estudiante, Anio)),
+    forrall(cursada(Estudiante, _, _, anual(OtroAnio)), cursoAlgunaMateriaEnVerano(Estudiante, OtroAnio)).
 
 
-cursoAlgunaMateriaEnVerano(Anio) :-
-    cursada(Estudiante, Materia, _, verano(Anio, _)).
+cursoAlgunaMateriaEnVerano(Estudiante, Anio) :-
+    AnioVerano is Anio +1,
+    cursada(Estudiante, _, _, verano(AnioVerano, _)).
+
+
+/* Punto 6 */
+valoracionDeCursada(Estudiante, Materia, ValoracionDeCursada) :-
+    cursada(Estudiante, Materia, Nota, anual(_)),
+    ValoracionDeCursada is Nota.
+
+valoracionDeCursada(Estudiante, Materia, ValoracionDeCursada) :-
+    cursada(Estudiante, Materia, Nota, cuatrimestral(_, Cuatrimestre)),
+    ValoracionDeCursada is (Nota - Cuatrimestre).
+
+valoracionDeCursada(Estudiante, Materia, ValoracionDeCursada) :-
+    cursada(Estudiante, Materia, Nota, verano(Anio, Mes)),
+    obtenerPuntaje(Anio, Mes, Nota, ValoracionDeCursada).
+
+obtenerPuntaje(Anio, Mes, Nota, Puntaje) :-
+    atom_length(Mes, CantidadLetras),
+    0 is (CantidadLetras + Anio) mod 2,
+    Puntaje is Nota.
+
+obtenerPuntaje(Anio, Mes, Nota, Puntaje) :-
+    atom_length(Mes, CantidadLetras),
+    not(0 is (CantidadLetras + Anio) mod 2),
+    Puntaje is Nota/2.
+
 
 %Tests
 :- begin_tests(cursada_universitaria).
