@@ -392,7 +392,7 @@ test(pablito_lescano_posee_perfil_buenasCursadas, nondet) :-
 test(pablito_lescano_posee_perfil_seLoQueHicisteElVeranoPasado, nondet) :-
     seLoQueHicisteElVeranoPasado(pablito).    
 
-test(estudiantes_invictus, set(Estudiantes = [pepo, pablito, lucas, pole])) :- /* Sumamos esos dos estudiantes que usamos para otros tests y también cumplen la condición */
+test(estudiantes_invictus, set(Estudiantes = [pepo, pablito, lucas, pole, test])) :- /* Sumamos esos tres estudiantes que usamos para otros tests y también cumplen la condición */
     invicto(Estudiantes).
 
 test(valoracionDeCursada_de_pepo_en_laboratorioDeComputacionII_es_3, nondet) :-
