@@ -270,6 +270,7 @@ buenasCursadas(Estudiante) :-
 
 /* Identifica todos los años en los que cursó alguna materia anual o cuatrimestral y se fija que haya cursado alguna materia de verano en esos años */
 seLoQueHicisteElVeranoPasado(Estudiante) :-
+    cursada(Estudiante, _, _, _),
     forall(cursada(Estudiante, _, _, cuatrimestral(Anio, _)), cursoAlgunaMateriaEnVerano(Estudiante, Anio)),
     forall(cursada(Estudiante, _, _, anual(OtroAnio)), cursoAlgunaMateriaEnVerano(Estudiante, OtroAnio)).
 
