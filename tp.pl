@@ -184,12 +184,10 @@ examenFinal(pole, laboratorioDeComputacionI,9).
 puedeCursar(Alumno, Materia):-
     esMateria(Materia,_),
     noCursoLaMateria(Alumno, Materia),
-    aproboCorrelativas(Alumno, Materia).
+    forall(esCorrelativaDe(Correlativa,Materia), aproboCorrelativas(Alumno,Correlativa)).
 
 aproboCorrelativas(Alumno, Materia):-
-    forall(hayMateriaNecesariaPara(Materia, OtraMateria), materiasCursadas(Alumno, OtraMateria)).
-
-
+    forall(esCorrelativaDe(Correlativa,Materia), materiasAprobadas(Alumno,Correlativa) ).
 
 noCursoLaMateria(Alguien,Materia) :- not(materiasCursadas(Alguien, Materia)).
 
