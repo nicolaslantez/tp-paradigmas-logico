@@ -263,7 +263,8 @@ repechaje(Estudiante, Materia) :-
 
 /* Se fija si todas las materias promocionables cursadas fueron promocionadas por un alumno */
 buenasCursadas(Estudiante) :-
-    cursada(Estudiante, _, _, _),
+    cursada(Estudiante, Materia, _, _),
+    esPromocionable(Materia),
     forall(cursada(Estudiante, Materia, Nota, _), promocionoMateria(Nota, Materia)).    
 
 /* E */
