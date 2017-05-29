@@ -278,8 +278,8 @@ seLoQueHicisteElVeranoPasado(Estudiante) :-
 
 /* Se fija si curso alguna materia en el año calendario siguiente*/
 cursoAlgunaMateriaEnVerano(Estudiante, Anio) :-
-    AnioVerano is Anio +1,
-    cursada(Estudiante, _, _, verano(AnioVerano, _)).
+    cursada(Estudiante, _, _, verano(AnioVerano, _)),
+    esSiguienteAnio(AnioVerano, Anio).
 
 /* Punto 5 */
 perfil(Estudiante, seLoQueHicisteElVeranoPasado) :-
